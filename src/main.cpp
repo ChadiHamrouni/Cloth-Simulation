@@ -30,7 +30,7 @@ int main()
     sf::Color wa(0, 255, 202);
     sf::Color green(13, 84, 93);
 
-    sf::VertexArray grid(sf::Lines);  // VertexArray to store the grid lines
+    sf::VertexArray grid(sf::Lines); 
 
     // Create the vertical lines of the grid
     for (int col = 0; col <= NumColumns; ++col) {
