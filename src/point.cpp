@@ -1,6 +1,6 @@
 #include "../header/point.h"
 
-float force_x = 0;
+float force_x = 20;
 float force_y = 30;
 
 Point::Point(float x, float y, float mass, bool pinned) {
