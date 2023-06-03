@@ -7,14 +7,11 @@ public:
     float Length;
     Point& P0;
     Point& P1;
+
     Stick(Point* p0, Point* p1, float length);
    
+    void Update(float dt);
 
-    void update(float dt);
+    void Render(sf::RenderWindow& window);
 
-    void render(sf::RenderWindow& window);
-
-  //  float distance(Point* p0, Point* p1);
-  
-   
 };

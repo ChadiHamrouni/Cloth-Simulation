@@ -3,8 +3,7 @@
 
 Stick::Stick(Point* p0, Point* p1, float length) : P0(*p0), P1(*p1), Length(length) {}
 
-
-void Stick::update(float dt) {
+void Stick::Update(float dt) {
 
     float dx = this->P1.x - this->P0.x;
     float dy = this->P1.y - this->P0.y;
@@ -27,18 +26,11 @@ void Stick::update(float dt) {
     }
 }
 
-void Stick::render(sf::RenderWindow& window) {
+void Stick::Render(sf::RenderWindow& window) {
 
     sf::VertexArray stick(sf::LineStrip, 2);
-    stick[0].position = P0.shape.getPosition() + sf::Vector2f(15.f, 15.f);
-    stick[1].position = P1.shape.getPosition() + sf::Vector2f(15.f, 15.f);
+    stick[0].position = P0.shape.getPosition() + sf::Vector2f(5.f, 5.f);
+    stick[1].position = P1.shape.getPosition() + sf::Vector2f(5.f, 5.f);
 
     window.draw(stick);
 }
-
-//float Stick::distance(Point* p0, Point* p1) {
-//
-//    float dx = p1.x - p0.x;
-//    float dy = p1.y - p0.y;
-//    return std::sqrt(dx * dx + dy * dy);
-//}

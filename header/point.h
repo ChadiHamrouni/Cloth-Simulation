@@ -8,15 +8,11 @@ public:
     bool pinned = false;
     sf::CircleShape shape;
 
-
     Point(float x, float y, float mass, bool pinned);
     Point();
 
-    void update_verlet(float dt);
+    void Update_Verlet(float dt);
 
-    void update(float dt);
+    void Render(sf::RenderWindow& window);
 
-    void render(sf::RenderWindow& window);
-
-    void constraint(int Width, int Height);
 };
