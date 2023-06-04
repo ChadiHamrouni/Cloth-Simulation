@@ -1,8 +1,15 @@
 #include <imgui.h>
-#include "../header/guioverlay.h"
 #include <SFML/Graphics.hpp>
+#include "../header/guioverlay.h"
+
+const int NumRows = 14;
+const int NumColumns = 25;
+const float CellSize = 51.1f;
+sf::Color green(13, 84, 93);
 
 namespace Overlay {
+
+    sf::VertexArray grid(sf::Lines);
 
     void ShowOverlay(bool* p_open)
     {
@@ -218,5 +225,27 @@ namespace Overlay {
                 }
             ImGui::Text("Mouse wheel: %.1f", io.MouseWheel);
         }
+    }
+
+    void SetupGrid() {
+       
+        // Create the vertical lines of the grid
+        for (int col = 0; col <= NumColumns; ++col) {
+            float x = col * CellSize;
+            grid.append(sf::Vertex(sf::Vector2f(x, 0.f), green));
+            grid.append(sf::Vertex(sf::Vector2f(x, NumRows * CellSize), green));
+        }
+
+        // Create the horizontal lines of the grid
+        for (int row = 0; row <= NumRows; ++row) {
+            float y = row * CellSize;
+            grid.append(sf::Vertex(sf::Vector2f(0.f, y), green));
+            grid.append(sf::Vertex(sf::Vector2f(NumColumns * CellSize, y), green));
+        }
+
+    }
+
+    void RenderGrid(sf::RenderWindow& window) {
+        window.draw(grid);
     }
 }
