@@ -1,6 +1,5 @@
 #include "../header/stick.h"
 #include "../header/point.h"
-
 Stick::Stick(Point* p0, Point* p1, float length) : P0(*p0), P1(*p1), Length(length) {}
 
 void Stick::Update(float dt) {
