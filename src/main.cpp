@@ -1,8 +1,8 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include <SFML/Graphics.hpp>
-
 #include <vector>
+
 #include "../header/point.h"
 #include "../header/stick.h"
 #include "../header/guioverlay.h"
@@ -10,11 +10,7 @@
 int Width = 1280;
 int Height = 720;
 
-const int NumRows = 14;
-const int NumColumns = 25;
-const float CellSize = 51.1f;
-
-const int NUM_OBJECTS = 45;
+const int NUM_OBJECTS = 40;
 int numIterations = 50;
 
 int main()
@@ -32,62 +28,29 @@ int main()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     bool show = true;
 
-    sf::Color red(235, 69, 95);
-    sf::Color green(13, 84, 93);
-
-    sf::VertexArray grid(sf::Lines);
-
-    // Create the vertical lines of the grid
-    for (int col = 0; col <= NumColumns; ++col) {
-        float x = col * CellSize;
-        grid.append(sf::Vertex(sf::Vector2f(x, 0.f), green));
-        grid.append(sf::Vertex(sf::Vector2f(x, NumRows * CellSize), green));
-    }
-
-    // Create the horizontal lines of the grid
-    for (int row = 0; row <= NumRows; ++row) {
-        float y = row * CellSize;
-        grid.append(sf::Vertex(sf::Vector2f(0.f, y), green));
-        grid.append(sf::Vertex(sf::Vector2f(NumColumns * CellSize, y), green));
-    }
+    Overlay::SetupGrid();
 
     std::vector<Point> points;
-    float xini = 450;
-    for (int i = 0; i < NUM_OBJECTS; i++) {
-        float yini = 200;
-        for (int j = 0; j < NUM_OBJECTS; j++) {
-            Point p = Point(xini, yini, 1, false);
-            points.push_back(p);
-            yini = yini + 10;
-        }
-        xini = xini + 10;
-    }
+    Point::SetInitialPosition(NUM_OBJECTS, points);
+    Point::SetAnchorPoints(points);
 
-    float initialx = 450;
-    float initialy = 200;
-    for (int i = 0; i <= 35; i = i + 5) {
-        points[i] = Point(initialx, initialy, 1.0, true);
-        initialx = initialx + 50;
-
-    }
-
-    std::vector<Stick> sticks;
-    //   Point d[NUM_OBJECTS][NUM_OBJECTS];
+    // Store the points in a 2D array to ease connecting the points
     Point*** d = new Point * *[NUM_OBJECTS];
-
     for (int i = 0; i < NUM_OBJECTS; i++) {
         d[i] = new Point * [NUM_OBJECTS];
         for (int j = 0; j < NUM_OBJECTS; j++) {
             d[i][j] = &points[static_cast<std::vector<Point, std::allocator<Point>>::size_type>(i) * NUM_OBJECTS + j];
         }
     }
-
+    
+    // Connecting every point with its right and below neighbor
+    std::vector<Stick> sticks;
     for (int i = 0; i < NUM_OBJECTS - 1; i++) {
         for (int j = 0; j < NUM_OBJECTS - 1; j++) {
+            Point* a = d[i][j]; 
+            Point* b1 = d[i + 1][j]; // Connect the Point with its right neighbor
+            Point* b2 = d[i][j + 1]; // Connect Point with it's below  
 
-            Point* a = d[i][j];
-            Point* b1 = d[i + 1][j];
-            Point* b2 = d[i][j + 1];
             Stick stick1(a, b1, 10);
             sticks.push_back(stick1);
             Stick stick2(a, b2, 10);
@@ -111,11 +74,11 @@ int main()
         // Updating the points positions
         for (int i = 0; i < NUM_OBJECTS; i++) {
             for (int j = 0; j < NUM_OBJECTS; j++) {
-                d[i][j]->Update_Verlet(dt);
+                d[i][j]->UpdateVerlet(dt);
             }
         }
 
-        // Updating the sticks positions (through increasing iterations to increase performance)
+        // Updating the sticks positions through iterations to increase performance
         for (int i = 0; i < numIterations; i++) {
             for (Stick& stick : sticks) {
                 stick.Update(dt / numIterations);
@@ -123,13 +86,15 @@ int main()
         }
 
         ImGui::SFML::Update(window, clock.restart());
-        Overlay::ShowSideBar();
 
+        // Rendering the GUI components
+        Overlay::ShowSideBar();
         Overlay::ShowOverlay(&show);
+
         window.clear();
 
         // Drawing the background grid
-        window.draw(grid);
+        Overlay::RenderGrid(window);
 
         // Rendering the sticks
         for (Stick& stick : sticks) {
