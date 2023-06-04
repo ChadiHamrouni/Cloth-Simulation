@@ -1,7 +1,7 @@
 #include "../header/point.h"
 
-float force_x = 20;
-float force_y = 30;
+float force_x = 150;
+float force_y = 100;
 
 Point::Point(float x, float y, float mass, bool pinned) {
 
@@ -19,7 +19,7 @@ Point::Point(float x, float y, float mass, bool pinned) {
 
 Point::Point() {}
 
-void Point::Update_Verlet(float dt) {
+void Point::UpdateVerlet(float dt) {
 
     if (!this->pinned) {
 
@@ -39,7 +39,30 @@ void Point::Update_Verlet(float dt) {
     }
 }
 
-void Point::Render(sf::RenderWindow& window) {
-    window.draw(shape);
+void Point::Render(sf::RenderWindow& window) { window.draw(shape);}
+
+void Point::SetInitialPosition(const int num_objects, std::vector<Point>& points) {
+
+    float xini = 450;
+    for (int i = 0; i < num_objects; i++) {
+        float yini = 200;
+        for (int j = 0; j < num_objects; j++) {
+            Point p = Point(xini, yini, 1, false);
+            points.push_back(p);
+            yini = yini + 10;
+        }
+        xini = xini + 10;
+    }
 }
 
+void Point::SetAnchorPoints(std::vector<Point>& points) {
+    
+    float initialx = 450;
+    float initialy = 200;
+
+    for (int i = 0; i <= 35; i = i + 5) {
+        points[i] = Point(initialx, initialy, 1.0, true);
+        initialx = initialx + 50;
+
+    }
+}
