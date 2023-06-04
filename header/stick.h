@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "point.h"
 
 class Stick {
@@ -13,5 +14,4 @@ public:
     void Update(float dt);
 
     void Render(sf::RenderWindow& window);
-
 };
