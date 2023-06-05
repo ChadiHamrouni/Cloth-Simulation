@@ -5,10 +5,10 @@
 const int NumRows = 14;
 const int NumColumns = 25;
 const float CellSize = 51.1f;
+
 sf::Color green(13, 84, 93);
 
 namespace Overlay {
-
     sf::VertexArray grid(sf::Lines);
 
     void ShowOverlay(bool* p_open)
@@ -176,7 +176,6 @@ namespace Overlay {
                 ImGui::SameLine();
                 ImGui::Text(text.c_str());
             }
-
             ImGui::Dummy(ImVec2(0, 10)); // Add spacing after the bullets and text
         }
 
@@ -242,7 +241,6 @@ namespace Overlay {
             grid.append(sf::Vertex(sf::Vector2f(0.f, y), green));
             grid.append(sf::Vertex(sf::Vector2f(NumColumns * CellSize, y), green));
         }
-
     }
 
     void RenderGrid(sf::RenderWindow& window) {
