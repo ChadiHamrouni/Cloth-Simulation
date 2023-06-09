@@ -4,7 +4,6 @@ float force_x = 150;
 float force_y = 100;
 
 Point::Point(float x, float y, float mass, bool pinned) {
-
     this->x = x;
     this->y = y;
     this->mass = mass;
@@ -20,7 +19,6 @@ Point::Point(float x, float y, float mass, bool pinned) {
 Point::Point() {}
 
 void Point::UpdateVerlet(float dt) {
-
     if (!this->pinned) {
 
         vel_x = this->x - this->old_x;
@@ -42,7 +40,6 @@ void Point::UpdateVerlet(float dt) {
 void Point::Render(sf::RenderWindow& window) { window.draw(shape);}
 
 void Point::SetInitialPosition(const int num_objects, std::vector<Point>& points) {
-
     float xini = 450;
     for (int i = 0; i < num_objects; i++) {
         float yini = 200;
@@ -56,7 +53,6 @@ void Point::SetInitialPosition(const int num_objects, std::vector<Point>& points
 }
 
 void Point::SetAnchorPoints(std::vector<Point>& points) {
-    
     float initialx = 450;
     float initialy = 200;
 
